@@ -1,14 +1,16 @@
 var http = require('http');
 var fs = require('fs');
-
+var requestCounter = 0;
 var server = http.createServer(function (request, response) {
+    requestCounter++;
     response.writeHead(200, {"Content-Type": "text/plain"});
     fs.readFile('package.json', 'utf8', function (err, data) {
+        var reqCountString = "---" + requestCounter + "\n---";
         if (err) {
-            response.end(data);
+            response.end(reqCountString + data);
             return console.log(err);
         }
-        response.end("Hello World\n" + data);
+        response.end("Hello World\n" + reqCountString + data);
         console.log(data);
     });
 });
